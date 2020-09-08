@@ -1,0 +1,61 @@
+Note:  Time complexity for divide the array is the height of the balanced binary tree is n/2^k => 2^k=n => k=logn and time complexity for merging the sorted list is
+       O(n),, so the total complexity is O(n*logn) => O(nlogn)
+       
+       In worst case it also takes O(nlogn) coz it always divide the array in two halves form the middle so it takes linear times to merge the subarrays and it makes always
+       balanced binary tree.
+
+#include<bits/stdc++.h>
+using namespace std;
+void merge(int *arr,int l,int m,int h){
+    int n1=m-l+1; //size of the left subarray
+    
+    int n2=h-m;   //size of the right subarray
+    
+    int L[n1],R[n2]; // L is the left subarray and R is the right subarray
+    
+    for(int i=0;i<n1;i++){
+        L[i]=arr[l+i];   //copy the left part of the array 
+    }
+    for(int j=0;j<n2;j++){
+        R[j]=arr[m+1+j];  //copy the right part of the array
+    }
+    int i=0;  // starting index of left array
+    int j=0;  // starting index of right array
+    int k=l;  // starting index of merged array 
+    while(i<n1 and j<n2){
+        if(L[i]<=R[j]){
+             arr[k++]=L[i++];    
+        }
+        else{
+            arr[k++]=R[j++];
+        }
+    }
+    while(i<n1){
+        arr[k++]=L[i++];   //if there is any extra elements in left subarray
+    }
+    while(j<n2){
+        arr[k++]=R[j++];   // if there is any extra elements in right subarray
+    }
+    
+}
+void mergesort(int *arr, int l,int h){
+    if(l<h){
+        int mid=(l+h)/2;
+        mergesort(arr,l,mid);  //divide for left subarray
+        mergesort(arr,mid+1,h); //divide for right subarray
+        merge(arr,l,mid,h);  
+    }
+}
+int main(){
+    int n;
+    cin>>n;
+    int arr[n];
+    for(int i=0;i<n;i++)
+    {
+        cin>>arr[i];
+    }
+    mergesort(arr,0,n-1);
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+}
