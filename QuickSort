@@ -1,0 +1,42 @@
+Note: take pivot on the last element
+
+Time complexity: best case-> O(nlogn)     for one operation in each level of recursieve tree -> O(n) and height of the tree n/2^k =1 => 2^k=n => k= logn
+                                                         T.C : O(n*logn)=> O(nlogn)
+                 worst case -> O(n^2)     If the array is sorted then for one operation in each level of recursieve tree -> O(n) and there will be skewed tree and the 
+                                         complexity  of skewed tree or height is n so the total T.C : O(n*n) -> O(n^2)
+                                         
+Space complexity,,the size of the stack due to recursive call can be logn to n.
+
+#include<bits/stdc++.h>
+using namespace std;
+int partition(int *arr,int l,int h){
+    int pivot=arr[h];
+    int i=l-1;   // take the starting index from -1
+    for(int j=l;j<h;j++){
+        if(arr[j]<=pivot){
+            i++;                    // if arr[j]<=pivot then i++ and swap with the current element
+            swap(arr[i],arr[j]);  
+        }
+    }
+    swap(arr[i+1],arr[h]);  // swap with the last element
+    return i+1;  // actual position of the pivot
+}
+int quicksort(int *arr,int l,int h){
+    if(l<h){
+        int pivot=partition(arr,l,h);
+        quicksort(arr,l,pivot-1);   // left partion of the pivot where all elements are less than pivot
+        quicksort(arr,pivot+1,h);   // right partion of the pivot where all elements are greater than pivot
+    }
+}
+int main(){
+    int n;
+    cin>>n;
+    int arr[n];
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    quicksort(arr,0,n-1);
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+}
